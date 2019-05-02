@@ -1,0 +1,191 @@
+<style type="text/css">
+	body {
+		margin: 0;
+		font-family: sans-serif
+	}
+	.list {
+		width: 25%;
+		float: left
+	}
+	.otherthing {
+		background-color: #FFF;
+		width: 75%;
+		float: right;
+		color: #6F9FDF;
+		max-height: 100%;
+		overflow-y: scroll
+	}
+	.otherthing > span {
+		border-style: solid;
+		border-color: #1C5CB2;
+		border-width: 4px;
+		display: block
+	}
+	.searchbar {
+		margin: 24px;
+		height: 48px;
+		width: 400px;
+		font-size: 20px;
+		background-color: #6F9FDF;
+		border-style: solid;
+		border-color: #6F9FDF;
+		border-width: 1px;
+		border-radius: 4px;
+		padding-left: 8px
+	}
+	.actuallist {
+		max-height: calc(100% - 96px);
+		overflow-y: scroll
+	}
+	.result {
+		height: 64px;
+		background-color: white;
+		font-size: 18px;
+		font-weight: bold;
+		padding-top: 6px;
+		padding-left: 8px
+	}
+	.result:nth-child(even) {
+		background-color: #DDD
+	}
+	.patientpicture {
+		height: 256px;
+		margin-top: 52px;
+		margin-left: 96px
+	}
+	.patientpicture img {
+		width: 256px;
+		height: 256px;
+		margin-right: 32px;
+		border-radius: 128px;
+		float: left
+	}
+	.patientpicture * {
+		font-size: 24px;
+		margin-bottom: 12px
+	}
+	.name {
+		font-size: 48px;
+		font-weight: bold
+	}
+	.content-list {
+		margin-top: 16px;
+		margin-left: 96px
+	}
+	.content-list span {
+		font-size: 34px;
+		font-weight: bold
+	}
+	::-webkit-input-placeholder {
+		color: #adc3e0
+	}
+</style>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="prototype.json"></script>
+<script type="text/javascript" src="prototype.js"></script>
+
+<div class="list">
+	<input type="text" class="searchbar" placeholder="First or last name"></input>
+	<div class="actuallist">
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+		<div class="result">
+			<span>Last, First</span><br><span>AGE years old</span>
+		</div>
+	</div>
+</div>
+<div class="otherthing">
+<span>
+	<div class="patientpicture">
+		<img src="oof.jpg">
+		<div class="name">FIRST LAST</div>
+		<div class="age">AGE years old</div>
+		<div class="dateofbirth">Born on MONTH DAY, YEAR</div>
+		<div class="weight">WEIGHT lbs</div>
+		<div class="height">FEET' INCHES''</div>
+	</div>
+	<div class="content-list">
+		<br><span>Conditions</span>
+		<ul>
+			<li>NAME (TYPE/VARIATION)</li>
+			<li>NAME (TYPE/VARIATION)</li>
+			<li>NAME (TYPE/VARIATION)</li>
+		</ul>
+	</div>
+	<div class="content-list">
+		<span>Family Members</span>
+		<ul>
+			<li>FIRST LAST (RELATIONSHIP)</li>
+			<li>FIRST LAST (RELATIONSHIP)</li>
+			<li>FIRST LAST (RELATIONSHIP)</li>
+		</ul>
+	</div>
+	<div class="content-list">
+		<span>Medications</span>
+		<ul>
+			<li>NAME (DOSAGE, TIMES)</li>
+			<li>NAME (DOSAGE, TIMES)</li>
+			<li>NAME (DOSAGE, TIMES)</li>
+		</ul>
+	</div>
+	<div class="content-list">
+		<span>Notes</span>
+		<br><textarea style="width:400px;height:900px"></textarea>
+	</div>
+</span>
+</div>
