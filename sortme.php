@@ -1,7 +1,6 @@
 <h2>sortme</h2>
 
 <script type="application/javascript" src="jquery.js"></script>
-<script type="application/javascript" src="script.js"></script>
 
 <button onclick="go(0)">Sort By Last Name</button><br><br>
 <button onclick="go(1)">Sort By First Name</button><br><br>
@@ -70,7 +69,12 @@ function go($type) {
 }
 
 if (isset($_GET["go"])) {
+    // date_default_timezone_set('America/New_York');
+    // $n = microtime(true);
+    // echo "Start: " . $n . "<br>";
     go($_GET["go"]);
+    // $el = (round(microtime(true) * 1000) - round($n * 1000)) / 1000;
+    // echo "Elasped: " . $el . " seconds";
 }
 
 ?>
