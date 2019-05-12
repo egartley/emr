@@ -1,7 +1,7 @@
 # EMR Viewer
 Final project for [EDD](https://www.pltw.org/our-programs/pltw-engineering-curriculum#curriculum-9 "Engineering Design and Development") class, which is part of the [PLTW](https://www.pltw.org/ "Project Lead The Way") curriculum.
 
-This is not intended for use with actual medical data. It is merely a proof of concept for being able to quickly
+This is not intended for use with actual medical data. It is merely a proof of concept for being able to quickly sort and search through large amounts of data.
 
 All of the sample data (first and last names, birthdays, etc.) is randomly generated, and is not representative of real people.
 
