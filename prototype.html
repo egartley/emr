@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<head>
-    <link href="prototype.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="prototype.js"></script>
-    <title>Final Project EMR</title>
-</head>
-<body>
+<title>Mehagly EMR</title>
+<link href="prototype.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="prototype.js"></script>
 <div class="leftpane">
     <div class="searchcontainer">
         <input type="text" class="searchbar" placeholder="Search..."/>
         <div>
-            <input id="firstnameradio" type="radio" value="firstname" checked><label for="firstname"> First</label>
-            <input id="lastnameradio" type="radio" value="lastname"><label for="lastname"> Last</label>
+            <input id="firstnameradio" type="radio" value="firstname" checked><label for="firstnameradio"> First</label>
+            <input id="lastnameradio" type="radio" value="lastname"><label for="lastnameradio"> Last</label>
         </div>
         <div>
             <button id="clearresults">Clear</button>
@@ -29,41 +25,34 @@
 <div class="rightpane">
     <div>
         <div class="patientpicture">
-		<img src="oof.jpg">
-		<div class="name">FIRST LAST</div>
-		<div class="age">AGE years old</div>
-		<div class="dateofbirth">Born on MONTH DAY, YEAR</div>
-		<div class="weight">WEIGHT lbs</div>
-		<div class="height">FEET' INCHES''</div>
-	</div>
-	<div class="content-list">
-		<br><span>Conditions</span>
-		<ul>
-			<li>NAME (TYPE/VARIATION)</li>
-			<li>NAME (TYPE/VARIATION)</li>
-			<li>NAME (TYPE/VARIATION)</li>
-		</ul>
-	</div>
-	<div class="content-list">
-		<span>Family Members</span>
-		<ul>
-			<li>FIRST LAST (RELATIONSHIP)</li>
-			<li>FIRST LAST (RELATIONSHIP)</li>
-			<li>FIRST LAST (RELATIONSHIP)</li>
-		</ul>
-	</div>
-	<div class="content-list">
-		<span>Medications</span>
-		<ul>
-			<li>NAME (DOSAGE, TIMES)</li>
-			<li>NAME (DOSAGE, TIMES)</li>
-			<li>NAME (DOSAGE, TIMES)</li>
-		</ul>
-	</div>
-	<div class="content-list">
-		<span>Notes</span>
-		<br><textarea style="width:400px;height:900px"></textarea>
-	</div>
+            <img alt="picture" src="blank.png">
+            <div class="name">FIRST LAST</div>
+            <div class="age">AGE years old</div>
+            <div class="dateofbirth">Born on MONTH DAY, YEAR</div>
+            <div class="weight">WEIGHT lbs</div>
+            <div class="height">FEET' INCHES''</div>
+        </div>
+        <div class="content-list">
+            <br><span>Conditions</span>
+            <ul>
+                <li>N/A</li>
+            </ul>
+        </div>
+        <div class="content-list">
+            <span>Family Members</span>
+            <ul>
+                <li>NAME (REALATIONSHIP)</li>
+            </ul>
+        </div>
+        <div class="content-list">
+            <span>Medications</span>
+            <ul>
+                <li>N/A</li>
+            </ul>
+        </div>
+        <div class="content-list">
+            <span>Notes</span>
+            <br><textarea style="width:400px;height:128px"></textarea>
+        </div>
     </div>
 </div>
-</body>

@@ -8,8 +8,37 @@ function key(e, code) {
     return (e.keyCode || e.which) === code
 }
 
+function calculateage(unix) {
+    var today = new Date();
+    var birthDate = new Date(unix * 1000);
+    console.log(birthDate.getFullYear());
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+}
+
 function getresultitemhtml(patient) {
-    return "<div class=\"result\"><span>" + patient["lastname"] + ", " + patient["firstname"] + "</span><br><span>AGE years old</span></div>";
+    return "<div class=\"result\" patientid=\"" + patient["id"] + "\"><span>" + patient["lastname"] + ", " + patient["firstname"] + "</span><br><span>AGE years old</span></div>";
+}
+
+function getpatientcontenthtml(patient) {
+    // src=\"https://thispersondoesnotexist.com/image?" + new Date().getTime()
+    return "" +
+        "       <div class=\"patientpicture\">\n" +
+        "            <img alt=\"picture\" src=\"https://thispersondoesnotexist.com/image?" + new Date().getTime() + "\">\n" +
+        "            <div class=\"name\">" + patient["firstname"] + " " + patient["lastname"] + "</div>\n" +
+        "            <div class=\"age\">" + calculateage(patient["dob"]) + " years old</div>\n" +
+        "            <div class=\"dateofbirth\">Born on MONTH DAY, YEAR</div>\n" +
+        "            <div class=\"weight\">WEIGHT lbs</div>\n" +
+        "            <div class=\"height\">FEET' INCHES''</div>\n" +
+        "       </div>\n" +
+        "       <div class=\"content-list\"><br><span>Conditions</span><ul><li>N/A</li></ul></div>\n" +
+        "       <div class=\"content-list\"><span>Family Members</span><ul><li>NAME (REALTIONSHIP)</li></ul></div>\n" +
+        "       <div class=\"content-list\"><span>Medications</span><ul><li>N/A</li></ul></div>\n" +
+        "       <div class=\"content-list\"><span>Notes</span><br><textarea style=\"width:400px;height:128px\"></textarea></div>";
 }
 
 function pushresults(data, type) {
@@ -28,7 +57,21 @@ function pushresults(data, type) {
     }
     if (noresults) {
         $("div.noresultstext").show()
+    } else {
+        registerclickevents()
     }
+}
+
+function pushpatientcontent(id) {
+    $.getJSON("index/id/" + id.toString().substring(0, 1) + ".json", function (data) {
+        for (let i = 0; i < data.length; i++) {
+            let p = data[i];
+            if (p["id"].toString() === id.toString()) {
+                $("div.rightpane div")[0].innerHTML = getpatientcontenthtml(p);
+                break;
+            }
+        }
+    });
 }
 
 function search(query, type) {
@@ -65,6 +108,13 @@ function hideall() {
     $("div.invalidtext").hide();
     $("div.starttext").hide();
     $("div.actuallist").hide();
+}
+
+function registerclickevents() {
+    $("div.result").off("click");
+    $("div.result").on("click", function () {
+        pushpatientcontent($(this).attr("patientid"))
+    })
 }
 
 $(document).ready(function () {

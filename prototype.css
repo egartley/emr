@@ -72,6 +72,11 @@ body {
     background-color: #DDD
 }
 
+.result:hover {
+    background-color: #1;
+    cursor: pointer
+}
+
 .patientpicture {
     height: 256px;
     margin-top: 52px;
@@ -82,7 +87,7 @@ body {
     width: 256px;
     height: 256px;
     margin-right: 32px;
-    border-radius: 128px;
+    border-radius: 50%;
     float: left
 }
 
