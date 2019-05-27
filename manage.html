@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Patient Data</title>
+    <script type="application/javascript" src="jquery.js"></script>
+    <script type="application/javascript">
+        $(document).ready(function () {
+            $("button#gendata").click(function () {
+                $("p#genstatus").html("<img src='spinner.svg' style='margin-right:6px'>Working...");
+                $.post("append-data.php", function(data){
+                    $("p#genstatus").html(data)
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+<button id="gendata">Generate new data</button>
+<p id="genstatus">Click the button to randomly generate new patient information</p>
+</body>
+</html>

@@ -1,9 +1,10 @@
 <?php
 
 // Credit: https://stackoverflow.com/a/4356295
-function generateRandomString($length = 10)
+function random_string($length = 10)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    // store string length in variable as to not re-calc it everytime
     $charactersLength = strlen($characters);
     $randomString = '';
     for ($i = 0; $i < $length; $i++) {
@@ -12,53 +13,55 @@ function generateRandomString($length = 10)
     return $randomString;
 }
 
-$conds = array("Milk", "Eggs", "Peanuts", "Tree nuts", "Soy", "Wheat", "Fish", "Shellfish", "Seeds", "Gluten", "Flour", "Pollen", "Mold", "Dust", "Latex", "Meat", "Bees", "Dog", "Cat", "Aquagenic urticaria");
+$conditions = array("Milk", "Eggs", "Peanuts", "Tree nuts", "Soy", "Wheat", "Fish", "Shellfish", "Seeds", "Gluten", "Flour", "Pollen", "Mold", "Dust", "Latex", "Meat", "Bees", "Dog", "Cat", "Aquagenic urticaria");
 
 $newdata = array();
-$patients = array();
+$randomnames = array();
 
-$actualfile = file_get_contents("names.json");
-$jsondata = json_decode($actualfile, true);
-$lastnamearrays = array($jsondata["lastnames-0"], $jsondata["lastnames-1"], $jsondata["lastnames-2"], $jsondata["lastnames-3"], $jsondata["lastnames-4"]);
+$names = json_decode(file_get_contents("names.json"), true);
+$lastnamearrays = array($names["lastnames-0"], $names["lastnames-1"], $names["lastnames-2"], $names["lastnames-3"], $names["lastnames-4"]);
+
+// 100 random first names
+// 500 random last names (possible duplicates)
 
 for ($x = 0; $x < 10; $x++) {
     foreach ($lastnamearrays as $lastnames) {
         foreach ($lastnames as $lastname) {
-            $patient = [];
-            $patient['first'] = $jsondata["firstnames"][rand(0, 999)];
-            $patient['last'] = $lastname;
-            array_push($patients, $patient);
+            $name = [];
+            $name['first'] = $names["firstnames"][rand(0, 999)];
+            $name['last'] = $lastname;
+            array_push($randomnames, $name);
         }
     }
 }
 
-foreach ($patients as $patient) {
+foreach ($randomnames as $name) {
     $newpatient = [];
-    $newpatient["first"] = $patient["first"];
-    $newpatient["last"] = $patient["last"];
+    $newpatient["first"] = $name["first"];
+    $newpatient["last"] = $name["last"];
     $newpatient["id"] = rand(1000001, 9999999);
-    $newpatient["dob"] = strtotime(rand(1971, 2004) . "W01");
-    $newpatient["weight"] = rand(45, 250);
-    $newpatient["height"] = rand(45, 84);
-    $newpatient["notes"] = generateRandomString(300);
+    $newpatient["dob"] = rand(31791600, 1072652400); // unix
+    $newpatient["weight"] = rand(95, 250); // pounds
+    $newpatient["height"] = rand(50, 84); // inches
+    $newpatient["notes"] = random_string(32);
 
     $c = array();
-    for ($i = 0; $i < rand(1, 8); $i++) {
-        array_push($c, $conds[rand(0, count($conds) - 1)]);
+    for ($i = 0; $i < rand(-3, 4); $i++) {
+        array_push($c, $conditions[rand(0, count($conditions) - 1)]);
     }
     $newpatient["conditions"] = $c;
 
-    $c = array();
-    for ($i = 0; $i < rand(0, 6); $i++) {
-        array_push($c, rand(1, 20));
+    $m = array();
+    for ($i = 0; $i < rand(-2, 5); $i++) {
+        array_push($m, rand(1, 20));
     }
-    $newpatient["meds"] = $c;
+    $newpatient["meds"] = $m;
 
     array_push($newdata, $newpatient);
 }
 
-$filehook = fopen("rawdata_new.json", "w");
+$filehook = fopen("rawdata.json", "w");
 fwrite($filehook, json_encode($newdata));
 fclose($filehook);
 
-echo "Done\n<a href=\"sort.php\">Sort now</a>";
+echo "Done!\nSort now:\n<a href=\"sort.php?go=0\">Last name</a>\n<a href=\"sort.php?go=1\">First name</a>\n<a href=\"sort.php?go=2\">Patient ID</a>";
