@@ -78,7 +78,7 @@ class SortablePatient
             return $s;
         }
         if ($n != -1) {
-            return substr($s, $n, $n + 1);
+            return substr($s, $n, 1);
         }
         return substr($s, 0, 1);
     }

@@ -22,12 +22,17 @@ body {
 
 .rightpane > div {
     overflow-y: scroll;
-    max-height: inherit
+    max-height: inherit;
+    height: 100%
 }
 
 .searchcontainer {
     height: 100px;
-    padding: 24px
+    padding: 24px;
+    border-style: solid;
+    border-width: 0;
+    border-color: #1C5CB2;
+    border-bottom-width: 4px
 }
 
 .searchbar {
@@ -61,11 +66,7 @@ body {
 
 .actuallist {
     max-height: calc(100% - 152px);
-    overflow-y: scroll;
-    border-style: solid;
-    border-width: 0;
-    border-color: #1C5CB2;
-    border-top-width: 4px;
+    overflow-y: scroll
 }
 
 .result {

@@ -8,7 +8,7 @@
         $(document).ready(function () {
             $("button#gendata").click(function () {
                 $("p#genstatus").html("<img src='spinner.svg' style='margin-right:6px'>Working...");
-                $.post("append-data.php", function(data){
+                $.post("generate-data.php", function(data){
                     $("p#genstatus").html(data)
                 })
             })

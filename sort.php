@@ -22,37 +22,77 @@
 
 require_once 'SortablePatient.php';
 
-function store_by_type($sorted, $letter, $type)
+function go($type)
 {
-    $d = "lastname";
-    if ($type == SortablePatient::$FIRST_NAME) {
-        $d = "firstname";
-    } else if ($type == SortablePatient::$ID) {
-        $d = "id";
-    }
-    $file = fopen("index/" . $d . "/" . strtolower($letter) . ".json", "w");
-    echo strlen(json_encode($sorted));
-    echo "<br><br>";
-    fwrite($file, json_encode($sorted));
-    fclose($file);
-}
+    $datafilecontents = file_get_contents("rawdata.json");
+    $jsondata = json_decode($datafilecontents, true);
 
-function sort_by_type($data, $store, $type)
-{
+    $patients = array();
+    foreach ($jsondata as $patient) {
+        array_push($patients, new SortablePatient($patient));
+    }
+
+    $alphanumericized = array();
+    $alphabet = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+    $allnumbers = array("1", "2", "3", "4", "5", "6", "7", "8", "9");
     if ($type == SortablePatient::$ID) {
-        $numbers = array("1", "2", "3", "4", "5", "6", "7", "8", "9");
-        foreach ($numbers as $number) {
-            $patientswith = array();
-            foreach ($data as $pat) {
-                if ($number === $pat->get_nth(SortablePatient::$ID)) {
-                    // echo $pat->get_nth(SortablePatient::$ID);
-                    array_push($patientswith, $pat);
+        foreach ($allnumbers as $number) {
+            foreach ($patients as $p) {
+                if ($p->get_nth(SortablePatient::$ID) === $number) {
+                    if ($p->get_id() === 1595944) {
+                        echo "8124823649732456332325496234625<br><br>";
+                    }
+                    array_push($alphanumericized, $p);
                 }
             }
-            if ($store) {
-                store_by_type($patientswith, $number, SortablePatient::$ID);
+        }
+    } else {
+        foreach ($alphabet as $letter) {
+            foreach ($patients as $p) {
+                if ($p->get_nth($type) === $letter) {
+                    array_push($alphanumericized, $p);
+                }
             }
-            // echo "<br><br>";
+        }
+    }
+
+    set_time_limit(300);
+    sort_by_type($alphanumericized, $type);
+
+    if ($type == SortablePatient::$ID) {
+        echo "Sorted by ID, see <a href=\"/index/id/\" target=\"_blank\">/index/id/</a>";
+        return;
+    } else if ($type == SortablePatient::$FIRST_NAME) {
+        echo "Sorted by first name, see <a href=\"/index/first/\" target=\"_blank\">/index/first/</a>";
+        return;
+    } else if ($type == SortablePatient::$LAST_NAME) {
+        echo "Sorted by last name, see <a href=\"/index/last/\" target=\"_blank\">/index/last/</a>";
+        return;
+    }
+}
+
+if (isset($_GET["go"])) {
+    go($_GET["go"]);
+}
+
+function sort_by_type($data, $type)
+{
+    if ($type == SortablePatient::$ID) {
+        $nonzero = array("1", "2", "3", "4", "5", "6", "7", "8", "9");
+        $withzero = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+        foreach ($nonzero as $number1) {
+            foreach ($withzero as $number2) {
+                foreach ($withzero as $number3) {
+                    $patswithnn = array();
+                    $s = strval($number1) . strval($number2) . strval($number3);
+                    foreach ($data as $pat1) {
+                        if ($s === strval($pat1->get_nth(SortablePatient::$ID)) . strval($pat1->get_nth(SortablePatient::$ID, 1)) . strval($pat1->get_nth(SortablePatient::$ID, 2))) {
+                            array_push($patswithnn, $pat1);
+                        }
+                    }
+                    store_by_type($patswithnn, $s, SortablePatient::$ID);
+                }
+            }
         }
         return;
     }
@@ -73,53 +113,21 @@ function sort_by_type($data, $store, $type)
             }
         }
         array_push($sortedbyletter, $sorted);
-        if ($store && isset($type)) {
-            store_by_type($sorted, $currentletter, $type);
-        }
+        store_by_type($sorted, $currentletter, $type);
     }
 }
 
-function go($type)
+function store_by_type($sorted, $letter, $type)
 {
-    $datafilecontents = file_get_contents("rawdata.json");
-    $jsondata = json_decode($datafilecontents, true);
-
-    $patients = array();
-    foreach ($jsondata as $patient) {
-        array_push($patients, new SortablePatient($patient));
+    $d = "last";
+    if ($type == SortablePatient::$FIRST_NAME) {
+        $d = "first";
+    } else if ($type == SortablePatient::$ID) {
+        $d = "id";
     }
-
-    $sortedalphabetically = array();
-    $alphabet = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
-    foreach ($alphabet as $letter) {
-        // all the A's, then all the B's, all the C's, etc.
-        foreach ($patients as $p) {
-            $tt = $type;
-            if ($type == SortablePatient::$ID) {
-                $tt = SortablePatient::$LAST_NAME;
-            }
-            if ($p->get_nth($tt) === $letter) {
-                array_push($sortedalphabetically, $p);
-            }
-        }
-    }
-
-    sort_by_type($sortedalphabetically, true, $type);
-
-    if ($type == SortablePatient::$ID) {
-        echo "Sorted by ID, see <a href=\"/index/id/\" target=\"_blank\">/index/id/</a>";
-        return;
-    } else if ($type == SortablePatient::$FIRST_NAME) {
-        echo "Sorted by first name, see <a href=\"/index/firstname/\" target=\"_blank\">/index/firstname/</a>";
-        return;
-    } else if ($type == SortablePatient::$LAST_NAME) {
-        echo "Sorted by last name, see <a href=\"/index/lastname/\" target=\"_blank\">/index/lastname/</a>";
-        return;
-    }
-}
-
-if (isset($_GET["go"])) {
-    go($_GET["go"]);
+    $file = fopen("index/" . $d . "/" . strtolower($letter) . ".json", "w");
+    fwrite($file, json_encode($sorted));
+    fclose($file);
 }
 
 ?>

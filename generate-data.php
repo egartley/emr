@@ -14,6 +14,7 @@ function random_string($length = 10)
 }
 
 $conditions = array("Milk", "Eggs", "Peanuts", "Tree nuts", "Soy", "Wheat", "Fish", "Shellfish", "Seeds", "Gluten", "Flour", "Pollen", "Mold", "Dust", "Latex", "Meat", "Bees", "Dog", "Cat", "Aquagenic urticaria");
+$medications = array("Atorvastatin", "Cholestyramine", "Choline", "Fenofibrate", "Colestipol", "CRESTOR", "Fenofibrate", "Micronized fenofibric", "Gemfibrozil", "Lovastatin", "Niaci", "Pravastatin", "Simvastatin", "acetaZOLAMIDE", "acetoHEXAMIDE", "busPIRone", "buPROPion", "chlorproPAMIDE", "chlorproMAZINE", "clomiPHENE", "clomiPRAMINE", "cycloSERINE", "cycloSPORINE", "cycloSERINE", "diphenhydrAMINE", "dimenhyDRINATE", "DOBUTamine", "DOPamine", "DOPamine", "DOBUTamine", "DOXOrubicin", "DAUNOrubicin");
 
 $newdata = array();
 $randomnames = array();
@@ -24,7 +25,7 @@ $lastnamearrays = array($names["lastnames-0"], $names["lastnames-1"], $names["la
 // 100 random first names
 // 500 random last names (possible duplicates)
 
-for ($x = 0; $x < 10; $x++) {
+for ($x = 0; $x < 1; $x++) {
     foreach ($lastnamearrays as $lastnames) {
         foreach ($lastnames as $lastname) {
             $name = [];
@@ -53,7 +54,7 @@ foreach ($randomnames as $name) {
 
     $m = array();
     for ($i = 0; $i < rand(-2, 5); $i++) {
-        array_push($m, rand(1, 20));
+        array_push($m, $medications[rand(0, count($medications) - 1)]);
     }
     $newpatient["meds"] = $m;
 

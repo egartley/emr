@@ -75,7 +75,7 @@ function getpatientcontenthtml(patient) {
         }
     }
 
-    html += "</ul></div><div class=\"content-list\"><span>Family Members</span><ul><li>NAME (REALTIONSHIP)</li></ul></div><div class=\"content-list\"><span>Medications</span><ul>";
+    html += "</ul></div><div class=\"content-list\"><span>Medications</span><ul>";
 
     if (patient["meds"].length === 0) {
         html += "<li>None</li>"
@@ -115,7 +115,6 @@ function onresultitemclick(id) {
     $.getJSON("index/id/" + id.toString().substring(0, 3) + ".json", function (data) {
         for (let i = 0; i < data.length; i++) {
             let p = data[i]["data"];
-            console.log(p["id"].toString() + ", " + id.toString() + " (" + (p["id"].toString() === id.toString()) + ")");
             if (p["id"].toString() === id.toString()) {
                 $("div.rightpane div")[0].innerHTML = getpatientcontenthtml(p);
                 break
