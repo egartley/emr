@@ -1,68 +1,65 @@
 <?php
 
-// Credit: https://stackoverflow.com/a/4356295
-function random_string($length = 10)
+require_once "util.php";
+
+function random_property($min = 0, $max = 1, $props = array())
 {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    // store string length in variable as to not re-calc it everytime
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    $a = array();
+    for ($i = 0; $i < rand($min, $max); $i++) {
+        $p = random_from($props);
+        if (in_array($p, $a)) {
+            continue; // prevent duplicates
+        }
+        array_push($a, $p);
     }
-    return $randomString;
+    return $a;
 }
 
-$conditions = array("Milk", "Eggs", "Peanuts", "Tree nuts", "Soy", "Wheat", "Fish", "Shellfish", "Seeds", "Gluten", "Flour", "Pollen", "Mold", "Dust", "Latex", "Meat", "Bees", "Dog", "Cat", "Aquagenic urticaria");
-$medications = array("Atorvastatin", "Cholestyramine", "Choline", "Fenofibrate", "Colestipol", "CRESTOR", "Fenofibrate", "Micronized fenofibric", "Gemfibrozil", "Lovastatin", "Niaci", "Pravastatin", "Simvastatin", "acetaZOLAMIDE", "acetoHEXAMIDE", "busPIRone", "buPROPion", "chlorproPAMIDE", "chlorproMAZINE", "clomiPHENE", "clomiPRAMINE", "cycloSERINE", "cycloSPORINE", "cycloSERINE", "diphenhydrAMINE", "dimenhyDRINATE", "DOBUTamine", "DOPamine", "DOPamine", "DOBUTamine", "DOXOrubicin", "DAUNOrubicin");
-
-$newdata = array();
-$randomnames = array();
-
-$names = json_decode(file_get_contents("names.json"), true);
-$lastnamearrays = array($names["lastnames-0"], $names["lastnames-1"], $names["lastnames-2"], $names["lastnames-3"], $names["lastnames-4"]);
-
-// 100 random first names
-// 500 random last names (possible duplicates)
-
-for ($x = 0; $x < 1; $x++) {
-    foreach ($lastnamearrays as $lastnames) {
-        foreach ($lastnames as $lastname) {
-            $name = [];
-            $name['first'] = $names["firstnames"][rand(0, 999)];
-            $name['last'] = $lastname;
-            array_push($randomnames, $name);
+function random_names($data) {
+    $randomnames = array();
+    $lastnamearrays = array($data["lastnames-0"], $data["lastnames-1"], $data["lastnames-2"], $data["lastnames-3"], $data["lastnames-4"]);
+    for ($x = 0; $x < 2; $x++) {
+        foreach ($lastnamearrays as $lastnames) {
+            foreach ($lastnames as $lastname) {
+                $name = [];
+                $name['first'] = random_from($data["firstnames"]);
+                $name['last'] = $lastname;
+                array_push($randomnames, $name);
+            }
         }
     }
+    return $randomnames;
 }
 
-foreach ($randomnames as $name) {
+// currently generating:
+// 10,000 random patients
+
+$conditions = array("Milk", "Eggs", "Peanuts", "Tree nuts", "Soy", "Wheat", "Fish", "Shellfish", "Seeds", "Gluten", "Flour", "Pollen", "Mold", "Dust", "Latex", "Meat", "Bees", "Dog", "Cat", "Aquagenic urticaria");
+$medications = array("Atorvastatin", "Cholestyramine", "Choline", "Fenofibrate", "Colestipol", "CRESTOR", "Fenofibrate", "Micronized fenofibric", "Gemfibrozil", "Lovastatin", "Niaci", "Pravastatin", "Simvastatin", "acetaZOLAMIDE", "acetoHEXAMIDE", "busPIRone", "buPROPion", "chlorproPAMIDE", "chlorproMAZINE", "clomiPHENE", "clomiPRAMINE", "cycloSERINE", "cycloSPORINE", "cycloSERINE", "diphenhydrAMINE", "dimenhyDRINATE", "DOPamine", "DOBUTamine", "DOXOrubicin", "DAUNOrubicin");
+$names = json_from("names.json");
+$built = array();
+
+foreach (random_names($names) as $name) {
     $newpatient = [];
     $newpatient["first"] = $name["first"];
     $newpatient["last"] = $name["last"];
     $newpatient["id"] = rand(1000001, 9999999);
     $newpatient["dob"] = rand(31791600, 1072652400); // unix
-    $newpatient["weight"] = rand(95, 250); // pounds
-    $newpatient["height"] = rand(50, 84); // inches
+    $newpatient["w"] = rand(95, 250); // pounds
+    $newpatient["h"] = rand(50, 84); // inches
     $newpatient["notes"] = random_string(32);
-
-    $c = array();
-    for ($i = 0; $i < rand(-3, 4); $i++) {
-        array_push($c, $conditions[rand(0, count($conditions) - 1)]);
-    }
-    $newpatient["conditions"] = $c;
-
-    $m = array();
-    for ($i = 0; $i < rand(-2, 5); $i++) {
-        array_push($m, $medications[rand(0, count($medications) - 1)]);
-    }
-    $newpatient["meds"] = $m;
-
-    array_push($newdata, $newpatient);
+    $newpatient["g"] = random_from();
+    $newpatient["conditions"] = random_property(-3, 4, $conditions);
+    $newpatient["meds"] = random_property(-2, 5, $medications);
+    array_push($built, $newpatient);
 }
 
-$filehook = fopen("rawdata.json", "w");
-fwrite($filehook, json_encode($newdata));
-fclose($filehook);
+// be mindful of PHP memory limit
 
-echo "Done!\nSort now:\n<a href=\"sort.php?go=0\">Last name</a>\n<a href=\"sort.php?go=1\">First name</a>\n<a href=\"sort.php?go=2\">Patient ID</a>";
+json_to_file($built, "rawdata.json");
+
+echo "Done!
+Sort now:
+<a href=\"sort.php?go=0\">Last name</a>
+<a href=\"sort.php?go=1\">First name</a>
+<a href=\"sort.php?go=2\">Patient ID</a>";

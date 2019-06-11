@@ -4,19 +4,42 @@
     <meta charset="UTF-8">
     <title>Manage Patient Data</title>
     <script type="application/javascript" src="jquery.js"></script>
+    <style>
+        body {
+            background-color: #111111;
+            color: #F8F8F8;
+            font-family: sans-serif;
+            margin-top: 100px
+        }
+        div {
+            width: 350px;
+            margin: 0 auto
+        }
+    </style>
     <script type="application/javascript">
         $(document).ready(function () {
+            let workinghtml = "<img src='spinner.svg' style='margin-right:6px'>Working...";
             $("button#gendata").click(function () {
-                $("p#genstatus").html("<img src='spinner.svg' style='margin-right:6px'>Working...");
-                $.post("generate-data.php", function(data){
-                    $("p#genstatus").html(data)
+                $("p#status").html(workinghtml);
+                $.post("generate-data.php", function (data) {
+                    $("p#status").html(data)
+                })
+            });
+            $("button#sortdata").click(function () {
+                $("p#status").html(workinghtml);
+                $.post("sort.php?go=0&all=yes", function (data) {
+                    $("p#status").html(data)
                 })
             })
         })
     </script>
 </head>
 <body>
-<button id="gendata">Generate new data</button>
-<p id="genstatus">Click the button to randomly generate new patient information</p>
+<div>
+    <button id="gendata">Generate new data</button>
+    <br><br>
+    <button id="sortdata">Sort by all types</button>
+    <p id="status">Status: Ready</p>
+</div>
 </body>
 </html>

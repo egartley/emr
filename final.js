@@ -1,5 +1,6 @@
 let prev = "";
 let searchtypes = ["first", "last"];
+let searchtype = 0;
 const TYPE_FIRSTNAMES = 0;
 const TYPE_LASTNAMES = 1;
 const RESULT_LIMIT = 100;
@@ -23,7 +24,7 @@ function calculateage(unix) {
     return age;
 }
 
-function calculatefeetinches(inches) {
+function getprettyheight(inches) {
     return ((inches - (inches % 12)) / 12) + "' " + (inches % 12) + "''";
 }
 
@@ -59,13 +60,19 @@ function getmonthasword(number) {
 }
 
 function getresultitemhtml(patient) {
-    return "<div class=\"result\" patientid=\"" + patient["id"] + "\"><span>" + patient["last"] + ", " + patient["first"] + "</span><br><span>" + calculateage(patient["dob"]) + " years old</span></div>";
+    return "<div class=\"result\" patientid=\"" + patient["id"] + "\"><span>" + patient["last"] + ", " + patient["first"] + "</span><br><span>#" + patient["id"] + "</span></div>";
 }
 
 function getpatientcontenthtml(patient) {
     // src=\"https://thispersondoesnotexist.com/image?" + new Date().getTime()
     let utd = unixtodate(patient["dob"]);
-    let html = "<div class=\"ataglance\"><img alt=\"picture\" src=\"https://thispersondoesnotexist.com/image?" + new Date().getTime() + "\"><div class=\"name\">" + patient["first"] + " " + patient["last"] + "</div><div class=\"age\">" + calculateage(patient["dob"]) + " years old</div><div class=\"dateofbirth\">Born on " + getmonthasword(utd.getMonth()) + " " + utd.getDate() + ", " + utd.getFullYear() + "</div><div class=\"weight\">" + patient["weight"] + " lbs</div><div class=\"height\">" + calculatefeetinches(patient["height"]) + "</div></div><div class=\"content-list\"><br><span>Conditions</span><ul>";
+    let html = "<div class=\"ataglance\"><img alt=\"picture\" src=\"blank.png\"><div class=\"name\">" + patient["first"] + " " + patient["last"] + "</div><div class=\"age\">";
+    if (patient["sex"] === 0) {
+        html += "Female";
+    } else {
+        html += "Male";
+    }
+    html += ", " + calculateage(patient["dob"]) + " years old</div><div class=\"dateofbirth\">Born on " + getmonthasword(utd.getMonth()) + " " + utd.getDate() + ", " + utd.getFullYear() + "</div><div class=\"weight\">" + patient["w"] + " lbs</div><div class=\"height\">" + getprettyheight(patient["h"]) + "</div></div><div class=\"content-list\"><br><span>Conditions</span><ul>";
 
     if (patient["conditions"].length === 0) {
         html += "<li>None</li>"
@@ -91,7 +98,7 @@ function getpatientcontenthtml(patient) {
 }
 
 function pushresults(data, type) {
-    clearresulthtml();
+    clearresultitems();
     let noresults = true;
     let list = $("div.actuallist")[0];
     for (let i = 0; i < data.length; i++) {
@@ -107,7 +114,7 @@ function pushresults(data, type) {
     if (noresults) {
         $("div.noresultstext").show()
     } else {
-        registerclickevents()
+        registeronclickresultitems()
     }
 }
 
@@ -120,6 +127,18 @@ function onresultitemclick(id) {
                 break
             }
         }
+        // ryan's "h y p e r l i n k" bs
+        let hyperlink = $("div.rightpane div.ataglance div.name");
+        hyperlink.off("click");
+        hyperlink.on("click", function () {
+            // set search bar text to their last name
+            $("input.searchbar").val(hyperlink.html().substring(hyperlink.html().indexOf(" ") + 1));
+            // make sure search type is last name
+            $("input#lastnameradio").attr("checked", true);
+            $("input#firstnameradio").attr("checked", false);
+            // simulate pressing enter
+            onenter()
+        })
     });
 }
 
@@ -130,13 +149,14 @@ function search(query, type) {
         $("div.invalidtext").show();
         $("div.actuallist").hide();
         prev = query;
-        return;
+        return
     } else if (query === prev) {
-        return;
+        return
     }
 
     hideall();
     $("div.loadingthingy").show();
+    $("div.loadingthingy img").attr("src", "spinner_large.svg");
 
     prev = query;
     let letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
@@ -151,7 +171,7 @@ function search(query, type) {
     }
 }
 
-function clearresulthtml() {
+function clearresultitems() {
     $("div.actuallist").html("")
 }
 
@@ -163,14 +183,22 @@ function hideall() {
     $("div.actuallist").hide();
 }
 
-function searchtypechange() {
+function setsearchtype() {
+    searchtype = TYPE_FIRSTNAMES;
+    if ($("input#lastnameradio").is(":checked")) {
+        searchtype = TYPE_LASTNAMES
+    }
+}
+
+function onsearchtypechanged() {
+    setsearchtype();
     prev = prev + prev;
     if (prev.length > 1000) {
         prev = "";
     }
 }
 
-function registerclickevents() {
+function registeronclickresultitems() {
     let resultitems = $("div.result");
     resultitems.off("click");
     resultitems.on("click", function () {
@@ -178,32 +206,30 @@ function registerclickevents() {
     })
 }
 
+function onenter() {
+    search($("input.searchbar").val(), searchtype)
+}
+
 $(document).ready(function () {
     $("input.searchbar").on("keyup", function (e) {
         if (key(e, 13)) {
-            // pressed enter
-            let t = TYPE_FIRSTNAMES;
-            if ($("input#lastnameradio").is(":checked")) {
-                t = TYPE_LASTNAMES;
-            }
-            // start search
-            search($("input.searchbar").val(), t)
+            onenter()
         }
     });
     $('input#firstnameradio').change(function () {
         if ($(this).is(':checked')) {
             $("input#lastnameradio").prop("checked", false)
         }
-        searchtypechange()
+        onsearchtypechanged()
     });
     $('input#lastnameradio').change(function () {
         if ($(this).is(':checked')) {
             $("input#firstnameradio").prop("checked", false)
         }
-        searchtypechange()
+        onsearchtypechanged()
     });
-    $("button#clearresults").on("click", function (e) {
-        clearresulthtml();
+    $("button#clearresults").on("click", function () {
+        clearresultitems();
         hideall();
         $("div.starttext").show();
         $("input.searchbar").val("");

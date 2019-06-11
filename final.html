@@ -4,6 +4,7 @@
 <script type="text/javascript" src="final.js"></script>
 <div class="leftpane">
     <div class="searchcontainer">
+        <h3>Search</h3>
         <input type="text" class="searchbar" placeholder="Search by name"/>
         <div>
             <input id="firstnameradio" type="radio" value="firstname" checked><label for="firstnameradio"> First</label>
@@ -13,11 +14,11 @@
             <button id="clearresults">Clear</button>
         </div>
     </div>
-    <div class="starttext stat">Search by first or last name</div>
-    <div class="noresultstext stat">No results!</div>
-    <div class="invalidtext stat">Invalid search term!</div>
+    <div class="starttext stat">Results will appear here</div>
+    <div class="noresultstext stat">Nothing matches your search</div>
+    <div class="invalidtext stat">Invalid search term</div>
     <div class="loadingthingy">
-        <img alt="Loading..." src="loading.gif">
+        <img alt="Loading..." src="spinner_large.svg">
         <div class="stat">Searching...</div>
     </div>
     <div class="actuallist"></div>
@@ -27,7 +28,7 @@
         <div class="ataglance">
             <img alt="picture" src="blank.png">
             <div class="name">FIRST LAST</div>
-            <div class="age">AGE years old</div>
+            <div class="age">GENDER, AGE years old</div>
             <div class="dateofbirth">Born on MONTH DAY, YEAR</div>
             <div class="weight">WEIGHT lbs</div>
             <div class="height">FEET' INCHES''</div>

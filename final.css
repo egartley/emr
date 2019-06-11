@@ -1,37 +1,45 @@
+:root {
+    --accent-color: #1C5CB2;
+    --complementary-accent-color: #6F9FDF;
+    --app-background-color: #F8F8F8;
+    --search-container-height: 156px;
+    --result-list-height-delta: 208px
+}
+
 body {
     margin: 0;
-    font-family: sans-serif
+    font-family: sans-serif;
+    background-color: var(--app-background-color)
 }
 
 .leftpane {
-    width: 25%;
     float: left;
+    width: 25%;
     height: 100%
 }
 
 .rightpane {
-    background-color: #FFF;
-    width: calc(75% - 8px);
     float: right;
-    color: #6F9FDF;
+    width: calc(75% - 8px);
     max-height: calc(100% - 8px);
+    color: var(--complementary-accent-color);
     border-style: solid;
-    border-color: #1C5CB2;
-    border-width: 4px;
+    border-color: var(--accent-color);
+    border-width: 4px
 }
 
 .rightpane > div {
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: inherit;
     height: 100%
 }
 
 .searchcontainer {
-    height: 100px;
+    height: var(--search-container-height);
     padding: 24px;
     border-style: solid;
     border-width: 0;
-    border-color: #1C5CB2;
+    border-color: var(--accent-color);
     border-bottom-width: 4px
 }
 
@@ -42,7 +50,7 @@ body {
     font-weight: bold;
     background-color: rgba(111, 159, 223, 0.5);
     border-style: solid;
-    border-color: #1C5CB2;
+    border-color: var(--accent-color);
     border-width: 2px;
     border-radius: 4px;
     padding-left: 8px;
@@ -57,7 +65,10 @@ body {
 
 .loadingthingy > img {
     display: block;
-    margin: auto
+    margin: auto;
+    padding-top: 100px;
+    width: 100px;
+    height: 100px
 }
 
 .loadingthingy > div.stat {
@@ -65,8 +76,8 @@ body {
 }
 
 .actuallist {
-    max-height: calc(100% - 152px);
-    overflow-y: scroll
+    max-height: calc(100% - var(--result-list-height-delta));
+    overflow-y: auto
 }
 
 .result {
@@ -75,15 +86,18 @@ body {
     font-size: 18px;
     font-weight: bold;
     padding-top: 6px;
-    padding-left: 8px
+    padding-left: 8px;
+    transition: all 0.05s linear
 }
 
 .result:nth-child(even) {
     background-color: #DDD
 }
 
-.result:hover {
-    background-color: #1;
+.result:hover,
+.result.active {
+    color: white;
+    background-color: var(--accent-color);
     cursor: pointer
 }
 

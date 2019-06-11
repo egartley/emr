@@ -35,12 +35,12 @@ class SortablePatient
 
     public function get_weight()
     {
-        return $this->data["weight"];
+        return $this->data["w"];
     }
 
     public function get_height()
     {
-        return $this->data["height"];
+        return $this->data["h"];
     }
 
     public function get_notes()
@@ -56,6 +56,11 @@ class SortablePatient
     public function get_meds()
     {
         return $this->data["meds"];
+    }
+
+    public function get_gender()
+    {
+        return $this->data["g"];
     }
 
     public function get_nth($type = -1, $n = -1)
