@@ -45,13 +45,11 @@ function sort_patients($patients, $type)
             foreach ($withzero as $number2) {
                 foreach ($withzero as $number3) {
                     $matches = array();
-                    $currentfirstthree = strval($number1) . strval($number2) . strval($number3);
+                    $currentfirstthree = strval($number1 . $number2 . $number3);
                     foreach ($patients as $p) {
-                        $thisfirstthree = strval($p->get_nth(SortablePatient::$ID)) . strval($p->get_nth(SortablePatient::$ID, 1)) . strval($p->get_nth(SortablePatient::$ID, 2));
-
-                        if ($currentfirstthree === $thisfirstthree) {
+                        $pfirstthree = substr(strval($p->get_id()), 0, 3);
+                        if ($currentfirstthree === $pfirstthree) {
                             array_push($matches, $p);
-                            unset($patients[array_search($p, $patients)]);
                         }
                     }
                     store_by_type($matches, $currentfirstthree, SortablePatient::$ID);
@@ -67,7 +65,6 @@ function sort_patients($patients, $type)
         foreach ($patients as $p) {
             if ($p->get_nth($type) === $currentletter) {
                 array_push($patientswithcurrentletter, $p);
-                unset($patients[array_search($p, $patients)]);
             }
         }
         store_by_type($patientswithcurrentletter, $currentletter, $type);

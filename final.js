@@ -1,6 +1,7 @@
 let prev = "";
 let searchtypes = ["first", "last"];
 let searchtype = 0;
+let lastactiveresultitem = null;
 const TYPE_FIRSTNAMES = 0;
 const TYPE_LASTNAMES = 1;
 const RESULT_LIMIT = 100;
@@ -119,6 +120,9 @@ function pushresults(data, type) {
 }
 
 function onresultitemclick(id) {
+    if (lastactiveresultitem !== null) {
+        lastactiveresultitem.removeClass("active")
+    }
     $.getJSON("index/id/" + id.toString().substring(0, 3) + ".json", function (data) {
         for (let i = 0; i < data.length; i++) {
             let p = data[i]["data"];
@@ -202,7 +206,9 @@ function registeronclickresultitems() {
     let resultitems = $("div.result");
     resultitems.off("click");
     resultitems.on("click", function () {
-        onresultitemclick($(this).attr("patientid"))
+        onresultitemclick($(this).attr("patientid"));
+        lastactiveresultitem = $(this);
+        lastactiveresultitem.addClass("active")
     })
 }
 
@@ -211,6 +217,8 @@ function onenter() {
 }
 
 $(document).ready(function () {
+    $.ajaxSetup({ cache: false });
+
     $("input.searchbar").on("keyup", function (e) {
         if (key(e, 13)) {
             onenter()
