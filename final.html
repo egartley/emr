@@ -2,52 +2,94 @@
 <link href="final.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="final.js"></script>
-<div class="leftpane">
-    <div class="searchcontainer">
-        <h3>Search</h3>
-        <input type="text" class="searchbar" placeholder="Search by name"/>
-        <div>
-            <input id="firstnameradio" type="radio" value="firstname" checked><label for="firstnameradio"> First</label>
-            <input id="lastnameradio" type="radio" value="lastname"><label for="lastnameradio"> Last</label>
-        </div>
-        <div>
-            <button id="clearresults">Clear</button>
-        </div>
+<div class="lock">
+    <style type="text/css">
+        .inputStuff {
+            max-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 64px
+        }
+        .title {
+            font-family: "Georgia", sans-serif;
+            font-size: 50px;
+            text-align: center;
+            padding-top: 10%
+        }
+        .inputStuff input {
+            height: 36px;
+            width: 250px;
+            padding-left: 8px;
+            margin-bottom: 16px
+        }
+        .inputStuff button {
+            width: 128px;
+            height: 38px;
+            font-family: sans-serif;
+            font-size: 22px;
+            background-color: #1C5CB2;
+            color: white;
+            border: solid 2px white;
+            border-radius: 3px;
+        }
+        ::-webkit-input-placeholder {
+            color: #6F9FDF
+        }
+    </style>
+    <div class="title">PEREMR</div>
+    <div class="inputStuff">
+        <input type="text" id="u" placeholder="Username">
+        <input type="password" id="p" placeholder="Password">
+        <button>Login</button>
     </div>
-    <div class="starttext stat">Results will appear here</div>
-    <div class="noresultstext stat">Nothing matches your search</div>
-    <div class="invalidtext stat">Invalid search term</div>
-    <div class="loadingthingy">
-        <img alt="Loading..." src="spinner_large.svg">
-        <div class="stat">Searching...</div>
-    </div>
-    <div class="actuallist"></div>
 </div>
-<div class="rightpane">
-    <div>
-        <div class="ataglance">
-            <img alt="picture" src="blank.png">
-            <div class="name">FIRST LAST</div>
-            <div class="age">GENDER, AGE years old</div>
-            <div class="dateofbirth">Born on MONTH DAY, YEAR</div>
-            <div class="weight">WEIGHT lbs</div>
-            <div class="height">FEET' INCHES''</div>
+<div class="app">
+    <div class="leftpane">
+        <div class="searchcontainer">
+            <h3>SEARCH</h3>
+            <input type="text" class="searchbar" placeholder="Search by first/last name"/>
+            <div class="filters">
+                <button id="f">First</button>
+                <button id="l">Last</button>
+            </div>
         </div>
-        <div class="content-list">
-            <br><span>Conditions</span>
-            <ul>
-                <li>N/A</li>
-            </ul>
+        <div class="starttext stat">Results will appear here</div>
+        <div class="noresultstext stat">Nothing matches your search</div>
+        <div class="invalidtext stat">Invalid search term</div>
+        <div class="loadingthingy">
+            <img alt="Loading..." src="spinner_large.svg">
+            <div class="stat">Searching...</div>
         </div>
-        <div class="content-list">
-            <span>Medications</span>
-            <ul>
-                <li>N/A</li>
-            </ul>
-        </div>
-        <div class="content-list">
-            <span>Notes</span>
-            <br><textarea style="width:400px;height:128px"></textarea>
+        <div class="actuallist"></div>
+    </div>
+    <div class="rightpane">
+        <div>
+            <div class="ataglance">
+                <img alt="picture" src="blank.png">
+                <div class="name">FIRST LAST</div>
+                <div class="age">GENDER, AGE years old</div>
+                <div class="dateofbirth">Born on MONTH DAY, YEAR</div>
+                <div class="weight">WEIGHT lbs</div>
+                <div class="height">FEET' INCHES''</div>
+            </div>
+            <div class="content-list">
+                <br><span>Conditions</span>
+                <ul>
+                    <li>N/A</li>
+                </ul>
+            </div>
+            <div class="content-list">
+                <span>Medications</span>
+                <ul>
+                    <li>N/A</li>
+                </ul>
+            </div>
+            <div class="content-list">
+                <span>Notes</span>
+                <br><textarea style="width:400px;height:128px"></textarea>
+            </div>
         </div>
     </div>
 </div>

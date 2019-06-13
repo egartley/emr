@@ -55,12 +55,31 @@ body {
     border-radius: 4px;
     padding-left: 8px;
     display: block;
-    margin: auto
+    margin: auto;
+    margin-bottom: 8px
 }
 
 ::-webkit-input-placeholder {
     color: #1d82df;
     font-weight: normal
+}
+
+.filters {
+    margin-bottom: 8px
+}
+
+.filters button {
+    color: white;
+    background-color: var(--complementary-accent-color);
+    border: solid 2px var(--accent-color);
+    border-radius: 3px;
+    width: 100px;
+    height: 32px;
+    transition: background-color 0.2s linear
+}
+
+.filters button.clicked {
+    background-color: var(--accent-color)
 }
 
 .loadingthingy > img {

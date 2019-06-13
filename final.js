@@ -5,6 +5,8 @@ let lastactiveresultitem = null;
 const TYPE_FIRSTNAMES = 0;
 const TYPE_LASTNAMES = 1;
 const RESULT_LIMIT = 100;
+const TEST_USERNAME = "username";
+const TEST_PASSWORD = "password";
 
 function key(e, code) {
     return (e.keyCode || e.which) === code
@@ -68,7 +70,7 @@ function getpatientcontenthtml(patient) {
     // src=\"https://thispersondoesnotexist.com/image?" + new Date().getTime()
     let utd = unixtodate(patient["dob"]);
     let html = "<div class=\"ataglance\"><img alt=\"picture\" src=\"blank.png\"><div class=\"name\">" + patient["first"] + " " + patient["last"] + "</div><div class=\"age\">";
-    if (patient["sex"] === 0) {
+    if (Math.random() * 10 > 5) {
         html += "Female";
     } else {
         html += "Male";
@@ -138,8 +140,10 @@ function onresultitemclick(id) {
             // set search bar text to their last name
             $("input.searchbar").val(hyperlink.html().substring(hyperlink.html().indexOf(" ") + 1));
             // make sure search type is last name
-            $("input#lastnameradio").attr("checked", true);
-            $("input#firstnameradio").attr("checked", false);
+            $("button#f").removeClass("clicked");
+            $("button#l").addClass("clicked");
+            onsearchtypechanged();
+            searchtype = TYPE_LASTNAMES;
             // simulate pressing enter
             onenter()
         })
@@ -187,15 +191,16 @@ function hideall() {
     $("div.actuallist").hide();
 }
 
-function setsearchtype() {
-    searchtype = TYPE_FIRSTNAMES;
-    if ($("input#lastnameradio").is(":checked")) {
+function togglesearchtype() {
+    if (searchtype === TYPE_FIRSTNAMES) {
         searchtype = TYPE_LASTNAMES
+    } else {
+        searchtype = TYPE_FIRSTNAMES
     }
 }
 
 function onsearchtypechanged() {
-    setsearchtype();
+    togglesearchtype();
     prev = prev + prev;
     if (prev.length > 1000) {
         prev = "";
@@ -217,32 +222,47 @@ function onenter() {
 }
 
 $(document).ready(function () {
-    $.ajaxSetup({ cache: false });
+    $.ajaxSetup({cache: false});
 
     $("input.searchbar").on("keyup", function (e) {
         if (key(e, 13)) {
             onenter()
         }
     });
-    $('input#firstnameradio').change(function () {
-        if ($(this).is(':checked')) {
-            $("input#lastnameradio").prop("checked", false)
+    $("input#p").on("keyup", function (e) {
+        if (key(e, 13)) {
+            $("div.lock button").click()
         }
+    });
+    $('button#f').on("click", function () {
+        console.log("firstname");
+        $(this).addClass("clicked");
+        $("button#l").removeClass("clicked");
         onsearchtypechanged()
     });
-    $('input#lastnameradio').change(function () {
-        if ($(this).is(':checked')) {
-            $("input#firstnameradio").prop("checked", false)
-        }
+    $('button#l').on("click", function () {
+        console.log("lastname");
+        $(this).addClass("clicked");
+        $("button#f").removeClass("clicked");
         onsearchtypechanged()
     });
     $("button#clearresults").on("click", function () {
         clearresultitems();
         hideall();
         $("div.starttext").show();
-        $("input.searchbar").val("");
+        $("input.searchbar").val("")
+    });
+    $("div.lock button").on("click", function () {
+        if ($("input#p").val() === TEST_PASSWORD && $("input#u").val() === TEST_USERNAME) {
+            $.when($("div.lock").fadeOut("fast")).done(function () {
+                $("div.app").fadeIn("fast")
+            })
+        }
     });
 
     hideall();
-    $("div.starttext").show()
+    $("button#f").addClass("clicked");
+    $("div.starttext").show();
+    $("div.app").hide();
+    $("div.lock").show()
 });
